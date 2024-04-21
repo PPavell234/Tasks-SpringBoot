@@ -1,4 +1,4 @@
-package com.muvi.todolist;
+package com.testProjects.todolist;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,4 +11,5 @@ public class TodoListApplication {
     }
 
 }
+
 

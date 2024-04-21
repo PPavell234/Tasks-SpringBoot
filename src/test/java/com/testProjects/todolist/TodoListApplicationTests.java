@@ -1,4 +1,4 @@
-package com.muvi.todolist;
+package com.testProjects.todolist;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
