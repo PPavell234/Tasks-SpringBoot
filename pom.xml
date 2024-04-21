@@ -8,10 +8,10 @@
         <version>3.1.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.muvi</groupId>
+    <groupId>com.testProjects</groupId>
     <artifactId>TodoList</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>TodoList</name>
+    <name>Tasks</name>
     <description>TodoList</description>
     <properties>
         <java.version>17</java.version>
