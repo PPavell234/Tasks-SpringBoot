@@ -5,7 +5,8 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: todo_db
+      MYSQL_DATABASE: db_todolist
+      MYSQL_ROOT_HOST: '%'
     ports:
       - "3306:3306"
 
