@@ -11,4 +11,4 @@ COPY target/TodoList-0.0.1-SNAPSHOT.jar /app/TodoList-0.0.1-SNAPSHOT.jar
 EXPOSE 8080
 
 # Run the application when the container starts
-CMD ["java", "-jar", "TodoList-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "TodoList-0.0.1-SNAPSHOT.jar"]
