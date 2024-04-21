@@ -1,18 +1,23 @@
 version: '3'
 services:
-  mysql:
-    image: mysql:latest
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: db_todolist
-      MYSQL_ROOT_HOST: '%'
-    ports:
-      - "3306:3306"
-
-  app:
-    build: .
+  spring-boot-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
       - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_todolist
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_todolist
+    ports:
+      - "3306:3306"
