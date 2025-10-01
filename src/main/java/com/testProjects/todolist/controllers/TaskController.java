@@ -35,6 +35,15 @@ public class TaskController {
 //        return "list";
 //    }
 
+
+    @PostMapping("/{id}/toggle")
+    public String toggleTaskCompletion(@PathVariable Long id) throws Throwable {
+        Task task = (Task) taskService.findTaskById(id);
+        task.setCompleted(!task.isCompleted()); // инвертируем состояние
+        taskService.saveTask(task);
+        return "redirect:/"; // обратно на список задач
+    }
+
     @GetMapping("/{id}")
     public String getTaskById(@PathVariable Long id, Model model) throws Throwable {
         Task task = (Task) taskService.findTaskById(id);

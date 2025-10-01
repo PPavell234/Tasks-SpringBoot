@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 public class Task {
 
+    private boolean completed = false;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,5 +20,13 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    // геттеры и сеттеры
+    public boolean isCompleted() {
+        return completed;
+    }
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
 
 }
