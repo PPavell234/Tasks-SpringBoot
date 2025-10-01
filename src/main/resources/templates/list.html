@@ -43,18 +43,20 @@
             <td th:text="${task.description}" th:classappend="${task.completed} ? 'text-decoration-line-through' : ''"></td>
             <td>
                 <!-- View -->
-                <a class="btn btn-primary btn-sm me-1" th:href="@{/{id}(id=${task.id})}">View</a>
+                <a class="btn btn-primary btn-sm me-1"
+                   th:href="@{/tasks/{id}(id=${task.id})}">View</a>
 
                 <!-- Edit -->
-                <a class="btn btn-warning btn-sm me-1" th:href="@{/{id}/edit(id=${task.id})}">Edit</a>
+                <a class="btn btn-warning btn-sm me-1"
+                   th:href="@{/tasks/{id}/edit(id=${task.id})}">Edit</a>
 
                 <!-- Delete -->
-                <form th:action="@{/{id}/delete(id=${task.id})}" method="post" style="display:inline;">
+                <form th:action="@{/tasks/{id}/delete(id=${task.id})}" method="post" style="display:inline;">
                     <button type="submit" class="btn btn-danger btn-sm me-1">Delete</button>
                 </form>
 
                 <!-- Done/Undo -->
-                <form th:action="@{/{id}/toggle(id=${task.id})}" method="post" style="display:inline;">
+                <form th:action="@{/tasks/{id}/toggle(id=${task.id})}" method="post" style="display:inline;">
                     <button type="submit"
                             th:class="${task.completed} ? 'btn btn-secondary btn-sm' : 'btn btn-success btn-sm'"
                             th:text="${task.completed} ? 'Undo' : 'Done'">
