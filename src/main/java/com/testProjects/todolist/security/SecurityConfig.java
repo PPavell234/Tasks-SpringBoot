@@ -15,6 +15,10 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -46,21 +50,43 @@ public class SecurityConfig {
         return daoAuthenticationProvider;
     }
 
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository(DataSource dataSource) {
+        JdbcTokenRepositoryImpl repo = new JdbcTokenRepositoryImpl();
+        repo.setDataSource(dataSource);
+        return repo;
+    }
+
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, DataSource dataSource) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/signin", "/signup").permitAll()
                         .requestMatchers("/tasks/**").authenticated()
-                        .requestMatchers("/signin").permitAll()
-                        .requestMatchers("/signup").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/signin")
                         .loginProcessingUrl("/login")
-                ).logout(logout -> logout.logoutSuccessUrl("/signin"));
+                        .defaultSuccessUrl("/tasks", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/signin?logout")
+                        .permitAll()
+                )
+                // ✅ ОБЯЗАТЕЛЬНО
+                .rememberMe(r -> r
+                        .tokenRepository(persistentTokenRepository(dataSource))
+                        .userDetailsService(userDetailsService)
+                        .rememberMeParameter("remember-me")
+                        .tokenValiditySeconds(7 * 24 * 60 * 60) // 7 дней
+                        .key("verySecretAndStableKey") // секретный ключ (не меняй потом!)
+                );
 
         return http.build();
     }
+
 }
