@@ -2,8 +2,13 @@ package com.testProjects.todolist.security;
 
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -19,14 +24,28 @@ public class CaptchaService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public boolean verifyCaptcha(String response) {
-        Map<String, String> body = new HashMap<>();
-        body.put("secret", recaptchaSecret);
-        body.put("response", response);
+        if (response == null || response.isEmpty()) {
+            return false;
+        }
 
-        ResponseEntity<Map> googleResponse = restTemplate.postForEntity(
-                GOOGLE_VERIFY_URL, body, Map.class);
+        MultiValueMap<String, String> requestData = new LinkedMultiValueMap<>();
+        requestData.add("secret", recaptchaSecret);
+        requestData.add("response", response);
 
-        if (googleResponse.getBody() == null) return false;
-        return (Boolean) googleResponse.getBody().get("success");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<MultiValueMap<String, String>> requestEntity =
+                new HttpEntity<>(requestData, headers);
+
+        ResponseEntity<Map> googleResponse =
+                restTemplate.postForEntity(GOOGLE_VERIFY_URL, requestEntity, Map.class);
+
+        if (googleResponse.getBody() == null) {
+            return false;
+        }
+
+        Object success = googleResponse.getBody().get("success");
+        return success != null && (Boolean) success;
     }
 }

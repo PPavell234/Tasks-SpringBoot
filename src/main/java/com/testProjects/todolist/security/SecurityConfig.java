@@ -54,12 +54,11 @@ public class SecurityConfig {
             if ("/login".equals(request.getRequestURI()) && "POST".equalsIgnoreCase(request.getMethod())) {
                 String captchaResponse = request.getParameter("g-recaptcha-response");
                 if (!captchaService.verifyCaptcha(captchaResponse)) {
-                    response.sendRedirect("/signin?error=captcha"); // ❌ редиректим обратно с ошибкой
+                    response.sendRedirect("/signin?error=captcha");
                     return;
                 }
             }
 
-            // ✅ если всё ок, передаём дальше, и Spring Security сам аутентифицирует и редиректит
             filterChain.doFilter(request, response);
         }
     }
