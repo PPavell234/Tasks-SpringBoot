@@ -23,6 +23,8 @@ import org.springframework.security.web.authentication.*;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.sql.DataSource;
@@ -31,6 +33,8 @@ import java.io.IOException;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+
 
 
 
@@ -102,6 +106,9 @@ public class SecurityConfig {
         repo.setDataSource(dataSource);
         return repo;
     }
+
+
+
 
 
 
