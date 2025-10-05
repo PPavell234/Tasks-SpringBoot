@@ -55,18 +55,29 @@ public class TaskController {
     @PostMapping
     public String createTask(@ModelAttribute Task task) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
+        String username = authentication.getName();
 
-        User user = userRepository.findByUsername(currentPrincipalName).orElse(null);
-        assert user != null;
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found: " + username));
 
-        // можно добавить привязку к пользователю
         task.setUser(user);
+        Task saved = taskService.saveTask(task);
 
-        taskService.saveTask(task);
-
-        return "redirect:/tasks"; // после создания — на список
+        // ✅ После создания редиректим на details
+        return "redirect:/tasks/" + saved.getId();
     }
+
+    @PostMapping("/{id}")
+    public String updateTask(@PathVariable Long id, @ModelAttribute("task") Task taskDetails) throws Throwable {
+        Task task = taskService.findTaskById(id);
+        task.setTitle(taskDetails.getTitle());
+        task.setDescription(taskDetails.getDescription());
+        Task updated = taskService.saveTask(task);
+
+        // ✅ После обновления редиректим на details
+        return "redirect:/tasks/" + updated.getId();
+    }
+
 
     /** ✅ Редактирование */
     @GetMapping("/{id}/edit")
@@ -76,14 +87,7 @@ public class TaskController {
         return "edit"; // edit.html
     }
 
-    @PostMapping("/{id}")
-    public String updateTask(@PathVariable Long id, @ModelAttribute("task") Task taskDetails) throws Throwable {
-        Task task = (Task) taskService.findTaskById(id);
-        task.setTitle(taskDetails.getTitle());
-        task.setDescription(taskDetails.getDescription());
-        taskService.saveTask(task);
-        return "redirect:/tasks";
-    }
+
 
     /** ✅ Удаление */
     @PostMapping("/{id}/delete")
