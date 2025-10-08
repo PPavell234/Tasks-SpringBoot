@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Календарь и задачи</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-[#2a2a2a] text-white min-h-screen p-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header buttons -->
+    <div class="flex justify-end gap-3 mb-12">
+      <button class="flex items-center gap-2 px-4 py-2 bg-[#3a3a3a] hover:bg-[#444] rounded-lg text-sm transition-colors">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <line x1="2" y1="6" x2="14" y2="6" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="5" y1="1" x2="5" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="11" y1="1" x2="11" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Подключить календарь
+      </button>
+      <button class="flex items-center gap-2 px-4 py-2 bg-[#3a3a3a] hover:bg-[#444] rounded-lg text-sm transition-colors">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="2" y1="4" x2="14" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="2" y1="12" x2="14" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Отображение
+      </button>
+    </div>
+
+    <!-- Main content -->
+    <div>
+      <!-- Today heading -->
+      <h1 class="text-2xl font-semibold mb-2">Сегодня</h1>
+      <div class="flex items-center gap-4 text-sm text-gray-400 mb-6">
+        <span class="flex items-center gap-1.5">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M7 3.5V7L9.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          1 задача
+        </span>
+        <span class="flex items-center gap-1.5">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M7 3.5V7L9.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          30мин.
+        </span>
+      </div>
+
+      <!-- Overdue section -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-3">
+          <button class="flex items-center gap-2 text-sm font-medium hover:text-gray-300 transition-colors">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" class="transform rotate-0">
+              <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Просрочено
+          </button>
+          <button class="text-sm text-[#ef4444] hover:text-[#dc2626] transition-colors">
+            Перенести
+          </button>
+        </div>
+
+        <!-- Task item -->
+        <div class="bg-[#333333] hover:bg-[#3a3a3a] rounded-lg p-4 mb-3 transition-colors cursor-pointer">
+          <div class="flex items-start justify-between">
+            <div class="flex-1">
+              <h3 class="font-medium mb-0.5">Игра</h3>
+              <p class="text-sm text-gray-400 mb-2">Яиц</p>
+              <div class="flex items-center gap-2 text-xs">
+                <span class="flex items-center gap-1.5 text-[#ef4444]">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1.5" y="2.5" width="9" height="8" rx="1" stroke="currentColor" stroke-width="1" fill="none"/>
+                    <line x1="1.5" y1="4.5" x2="10.5" y2="4.5" stroke="currentColor" stroke-width="1"/>
+                    <line x1="4" y1="1" x2="4" y2="3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                    <line x1="8" y1="1" x2="8" y2="3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                  </svg>
+                  19 июл 2024 11:00-11:30
+                </span>
+                <span class="text-gray-500">GCal</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 text-xs text-gray-400">
+              <span>Входящие</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 3L9 7L5 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date separator -->
+      <div class="text-sm font-medium text-gray-300 mb-4">
+        5 окт - Сегодня - Воскресенье
+      </div>
+
+      <!-- Add task button -->
+      <button class="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="8" y1="3" x2="8" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="3" y1="8" x2="13" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Добавить задачу
+      </button>
+    </div>
+  </div>
+</body>
+</html>
