@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class DetailsController {
 
-    @GetMapping("/page/details2")
-    public String showDetails2(Model model) {
-        Task task = new Task(1L, "Пример задачи", "Это описание задачи");
+    @GetMapping("/details2")
+    public String showDetailsPage(Model model) {
+        Task task = new Task(1L, "Demo Task", "This is a simple Thymeleaf example");
         model.addAttribute("task", task);
-        return "page/details2"; // ищет templates/page/details2.html
+        return "page2/details2";
     }
 
+    // простой вложенный класс для примера
     static class Task {
         private Long id;
         private String title;
