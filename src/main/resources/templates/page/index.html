@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synecdoche® - Newsletter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --background: 240 2% 8%;
+            --foreground: 0 0% 98%;
+            --primary: 0 0% 98%;
+            --primary-foreground: 0 0% 9%;
+            --border: 0 0% 98%;
+            --input: 0 0% 89.8%;
+            --inset: min(2vw, 1.5rem);
+            --sides: 1rem;
+            --footer-safe-area: calc(var(--inset) * 2 + 1.5rem + 2.25rem);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            overflow: hidden;
+        }
+
+        .font-serif {
+            font-family: 'Crimson Pro', serif;
+        }
+
+        /* Enhanced animations with smoother transitions */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(-150px) scale(0.9); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(200%); opacity: 0; }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes checkmark {
+            0% { stroke-dashoffset: 100; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .animate-fade-out {
+            animation: fadeOut 0.3s ease-out forwards;
+        }
+
+        .animate-slide-in {
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+            opacity: 0;
+        }
+
+        .btn-shine::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 3s infinite;
+        }
+
+        .hidden-element {
+            display: none;
+        }
+
+        /* Added animated gradient background */
+        .gradient-bg {
+            background: linear-gradient(135deg, 
+                hsl(240, 2%, 8%) 0%,
+                hsl(240, 3%, 12%) 25%,
+                hsl(240, 2%, 10%) 50%,
+                hsl(240, 3%, 14%) 75%,
+                hsl(240, 2%, 8%) 100%
+            );
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        /* Added input validation styles */
+        .input-error {
+            border-color: #ef4444 !important;
+            animation: shake 0.3s;
+        }
+
+        .input-success {
+            border-color: #10b981 !important;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Loading spinner */
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success checkmark animation */
+        .checkmark {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: checkmark 0.5s ease-out forwards;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: 'hsl(240 2% 8%)',
+                        foreground: 'hsl(0 0% 98%)',
+                        primary: {
+                            DEFAULT: 'hsl(0 0% 98%)',
+                            foreground: 'hsl(0 0% 9%)'
+                        },
+                        border: 'hsl(0 0% 98%)',
+                        input: 'hsl(0 0% 89.8%)',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <main class="h-screen w-full" style="padding: var(--inset);">
+        <div class="relative h-full w-full gradient-bg rounded-[42px] md:rounded-[72px]">
+            <div class="flex overflow-hidden relative flex-col gap-4 justify-center items-center pt-10 w-full h-full pb-[var(--footer-safe-area)] px-[var(--sides)] lg:gap-8">
+                <div>
+                    <h1 class="font-serif text-5xl italic sm:text-8xl lg:text-9xl text-foreground">
+                        Synecdoche®
+                    </h1>
+                </div>
+
+                <div class="flex flex-col items-center min-h-0 shrink">
+                    <div id="newsletterForm" class="animate-slide-in">
+                        <div class="flex flex-col gap-4 w-full max-w-xl md:gap-6 lg:gap-8">
+                            <form id="emailForm" class="flex gap-2">
+                                <div class="flex-1 relative">
+                                    <input 
+                                        type="email" 
+                                        id="emailInput"
+                                        placeholder="Enter your email" 
+                                        required
+                                        autocomplete="email"
+                                        autocapitalize="off"
+                                        class="w-full px-4 py-3 text-base bg-white/10 backdrop-blur-sm border-2 border-white/50 rounded-2xl text-foreground placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
+                                    />
+                                    <p id="errorMessage" class="hidden absolute -bottom-6 left-2 text-xs text-red-400"></p>
+                                </div>
+                                <button 
+                                    type="submit"
+                                    id="submitBtn"
+                                    class="px-6 py-3 bg-primary text-primary-foreground rounded-2xl hover:opacity-90 transition-all font-medium flex items-center justify-center min-w-[60px]"
+                                >
+                                    <span id="submitIcon">→</span>
+                                    <div id="loadingSpinner" class="spinner hidden"></div>
+                                </button>
+                            </form>
+                            <p class="text-base sm:text-lg lg:text-xl leading-tight font-medium text-center text-foreground">
+                                Stay updated with the latest news and exclusive content!
+                                Subscribe to our newsletter today and never miss out on
+                                exciting updates.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="successMessage" class="hidden-element">
+                        <div class="flex flex-col items-center gap-6 max-w-xl">
+                            <div class="w-20 h-20 rounded-full bg-green-500/20 backdrop-blur-sm border-2 border-green-500/50 flex items-center justify-center">
+                                <svg class="w-12 h-12" viewBox="0 0 50 50">
+                                    <path class="checkmark" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M10 25 L20 35 L40 15"/>
+                                </svg>
+                            </div>
+                            <div class="text-center">
+                                <h2 class="text-2xl font-bold mb-2 text-foreground">Thank you for subscribing!</h2>
+                                <p class="text-base text-foreground/80">We've sent a confirmation email to <span id="subscribedEmail" class="font-semibold"></span></p>
+                            </div>
+                            <button 
+                                id="subscribeAnotherBtn"
+                                class="px-6 py-2 text-sm bg-white/10 backdrop-blur-sm border border-white/50 rounded-xl text-foreground hover:bg-white/20 transition-all"
+                            >
+                                Subscribe another email
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <button 
+                            id="manifestoBtn"
+                            class="relative px-8 py-3 bg-primary text-primary-foreground rounded-2xl font-medium hover:opacity-90 transition-all overflow-hidden btn-shine"
+                        >
+                            <span id="btnText" class="transition-transform duration-300">Manifesto</span>
+                            <span id="closeIcon" class="hidden absolute -top-px -right-px w-10 h-10 bg-primary-foreground/10 rounded-full flex items-center justify-center text-xl">
+                                ✕
+                            </span>
+                        </button>
+                    </div>
+
+                    <div id="manifestoContent" class="hidden-element mt-6">
+                        <div class="relative flex min-h-0 overflow-hidden text-sm md:text-base max-h-[70vh] flex-col gap-8 text-center backdrop-blur-xl border-2 border-white/50 bg-white/20 max-w-3xl text-foreground rounded-3xl shadow-lg">
+                            <article class="relative overflow-y-auto italic p-6 h-full">
+                                <p class="my-4">
+                                    "We stand at the forefront of a new era, where creativity
+                                    meets technology to redefine what's possible. Our mission
+                                    is to empower individuals and businesses alike with
+                                    groundbreaking solutions that inspire change and drive
+                                    progress.
+                                </p>
+                                <p class="my-4">
+                                    We stand at the forefront of a new era, where creativity meets
+                                    technology to redefine what's possible. Our mission is to
+                                    empower individuals and businesses alike with groundbreaking
+                                    solutions that inspire change and drive progress.
+                                </p>
+                                <p class="my-4">
+                                    We believe in constant innovation, pushing boundaries to
+                                    create products that are not just tools, but catalysts for
+                                    transformation. We value simplicity, designing intuitive
+                                    experiences that make complex tasks effortless and enjoyable.
+                                    Our commitment to sustainability drives us to protect our
+                                    planet while delivering exceptional value. We foster
+                                    collaboration, building a community of thinkers, creators, and
+                                    doers who share a vision for a better tomorrow.
+                                </p>
+                                <p class="my-4">
+                                    Our promise is to deliver cutting-edge technology that is
+                                    accessible, reliable, and tailored to meet the needs of our
+                                    users. We will challenge the status quo, embrace change, and
+                                    lead the charge towards a brighter, more innovative future.
+                                </p>
+                                <p class="my-4">
+                                    Join us on this journey as we innovate, inspire, and ignite
+                                    the spark of creativity in every corner of the globe."
+                                </p>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="absolute bottom-0 left-0 right-0 flex justify-center items-center h-9 text-sm text-foreground/70" style="padding: 0 var(--inset) var(--inset);">
+                <p>© 2025 Synecdoche. All rights reserved.</p>
+            </footer>
+        </div>
+    </main>
+
+    <script>
+        const emailForm = document.getElementById('emailForm');
+        const emailInput = document.getElementById('emailInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const submitIcon = document.getElementById('submitIcon');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const errorMessage = document.getElementById('errorMessage');
+        const newsletterForm = document.getElementById('newsletterForm');
+        const successMessage = document.getElementById('successMessage');
+        const subscribedEmail = document.getElementById('subscribedEmail');
+        const subscribeAnotherBtn = document.getElementById('subscribeAnotherBtn');
+
+        // Email validation
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function showError(message) {
+            emailInput.classList.add('input-error');
+            errorMessage.textContent = message;
+            errorMessage.classList.remove('hidden');
+            setTimeout(() => {
+                emailInput.classList.remove('input-error');
+                errorMessage.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Newsletter form submission
+        emailForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = emailInput.value.trim();
+            
+            // Validate email
+            if (!email) {
+                showError('Please enter your email address');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitIcon.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+
+            // Simulate API call
+            try {
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Success - show success message
+                subscribedEmail.textContent = email;
+                
+                newsletterForm.classList.add('animate-fade-out');
+                setTimeout(() => {
+                    newsletterForm.classList.add('hidden-element');
+                    successMessage.classList.remove('hidden-element');
+                    successMessage.classList.add('animate-fade-in');
+                }, 300);
+                
+                // Reset form
+                emailForm.reset();
+            } catch (error) {
+                showError('Something went wrong. Please try again.');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitIcon.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden');
+            }
+        });
+
+        // Subscribe another email
+        subscribeAnotherBtn.addEventListener('click', () => {
+            successMessage.classList.add('animate-fade-out');
+            setTimeout(() => {
+                successMessage.classList.add('hidden-element');
+                successMessage.classList.remove('animate-fade-out', 'animate-fade-in');
+                newsletterForm.classList.remove('hidden-element', 'animate-fade-out');
+                newsletterForm.classList.add('animate-fade-in');
+            }, 300);
+        });
+
+        // Manifesto toggle
+        const manifestoBtn = document.getElementById('manifestoBtn');
+        const manifestoContent = document.getElementById('manifestoContent');
+        const btnText = document.getElementById('btnText');
+        const closeIcon = document.getElementById('closeIcon');
+        let isOpen = false;
+
+        manifestoBtn.addEventListener('click', () => {
+            isOpen = !isOpen;
+            
+            if (isOpen) {
+                // Hide newsletter/success content
+                const visibleContent = !newsletterForm.classList.contains('hidden-element') ? newsletterForm : successMessage;
+                visibleContent.classList.add('animate-fade-out');
+                setTimeout(() => {
+                    visibleContent.classList.add('hidden-element');
+                }, 300);
+                
+                // Show manifesto
+                setTimeout(() => {
+                    manifestoContent.classList.remove('hidden-element');
+                    manifestoContent.classList.add('animate-fade-in');
+                }, 300);
+                
+                // Update button
+                btnText.style.transform = 'translateX(-16px)';
+                closeIcon.classList.remove('hidden');
+            } else {
+                // Hide manifesto
+                manifestoContent.classList.add('animate-fade-out');
+                setTimeout(() => {
+                    manifestoContent.classList.add('hidden-element');
+                    manifestoContent.classList.remove('animate-fade-out', 'animate-fade-in');
+                }, 300);
+                
+                // Show newsletter/success content
+                const contentToShow = !successMessage.classList.contains('hidden-element') ? successMessage : newsletterForm;
+                setTimeout(() => {
+                    contentToShow.classList.remove('hidden-element', 'animate-fade-out');
+                    contentToShow.classList.add('animate-fade-in');
+                }, 300);
+                
+                // Update button
+                btnText.style.transform = 'translateX(0)';
+                closeIcon.classList.add('hidden');
+            }
+        });
+
+        // ESC key to close manifesto
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isOpen) {
+                manifestoBtn.click();
+            }
+        });
+
+        // Input focus effects
+        emailInput.addEventListener('focus', () => {
+            emailInput.classList.add('ring-2', 'ring-primary/50');
+        });
+
+        emailInput.addEventListener('blur', () => {
+            emailInput.classList.remove('ring-2', 'ring-primary/50');
+        });
+    </script>
+</body>
+</html>

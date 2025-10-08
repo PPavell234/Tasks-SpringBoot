@@ -40,7 +40,8 @@
         <tbody>
         <tr th:each="task : ${tasks}">
             <td th:text="${task.title}" th:classappend="${task.completed} ? 'text-decoration-line-through' : ''"></td>
-            <td th:text="${task.description}" th:classappend="${task.completed} ? 'text-decoration-line-through' : ''"></td>
+            <td th:text="${task.description}"
+                th:classappend="${task.completed} ? 'text-decoration-line-through' : ''"></td>
             <td>
                 <!-- View -->
                 <a class="btn btn-primary btn-sm me-1"
@@ -62,14 +63,10 @@
                             th:text="${task.completed} ? 'Undo' : 'Done'">
                     </button>
                 </form>
+                <a th:href="@{/index}" class="btn btn-danger btn-sm me-1">
+                    Переход на другую страницу
+                </a>
 
-
-                <!-- Переход на дрнуюу страницу -->
-                <form th:action="@{/testPageDoto}" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-danger btn-sm me-1">
-                        Переход на другую страницу
-                    </button>
-                </form>
 
             </td>
         </tr>
