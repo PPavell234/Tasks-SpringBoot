@@ -7,15 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class DetailsController {
 
-    @GetMapping("/details2")
+    @GetMapping("/page/details2")
     public String showDetails2(Model model) {
-        // Создадим тестовый объект задачи
         Task task = new Task(1L, "Пример задачи", "Это описание задачи");
         model.addAttribute("task", task);
-        return "details2";
+        return "page/details2"; // ищет templates/page/details2.html
     }
 
-    // Вложенный класс для простоты примера
     static class Task {
         private Long id;
         private String title;
