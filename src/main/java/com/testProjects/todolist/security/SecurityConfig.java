@@ -57,13 +57,29 @@ public class SecurityConfig {
 
             if ("/login".equals(request.getRequestURI()) && "POST".equalsIgnoreCase(request.getMethod())) {
                 String captchaResponse = request.getParameter("g-recaptcha-response");
+
+                if (captchaResponse == null || captchaResponse.trim().isEmpty()) {
+                    response.sendRedirect("/signin?error=empty_captcha");
+                    return;
+                }
+
                 if (!captchaService.verifyCaptcha(captchaResponse)) {
-                    response.sendRedirect("/signin?error=captcha");
+                    response.sendRedirect("/signin?error=invalid_captcha");
                     return;
                 }
             }
 
             filterChain.doFilter(request, response);
+        }
+
+        @Override
+        protected boolean shouldNotFilter(HttpServletRequest request) {
+            String uri = request.getRequestURI();
+            return uri.startsWith("/css/") ||
+                    uri.startsWith("/js/") ||
+                    uri.equals("/signin") ||
+                    uri.equals("/signup") ||
+                    uri.equals("/logout");
         }
     }
 
